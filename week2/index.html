@@ -36,9 +36,11 @@
 		
 		//asteroids data structure
 		var asteroid = [
-		    // x-rot, scale, model, color,    distance
-			[  1.57,  1.0,   "",    0xffff00, 250],
-			[  3.6,   0.7,   "",    0x000080, 300]
+		    // x-rot, scale, model, color,    distance, speed (only even numbers)
+			[  1.57,  1.0,   "",    0xffff00, 250,      2],
+			[  3.6,   0.7,   "",    0x000080, 300,      4],
+			[  1,  1.0,   "",       0xff0000, 800,      2],
+			[  8.6,   0.7,   "",    0x2D383A, 500,      2],
 		];
 		
 		num_asteroids = asteroid.length;
@@ -88,6 +90,7 @@
 			light.distance = 500;
 			light.position.set(0,250,0);
 			
+			
 			//example of building visual object from primitives (the planet)
 			var geometry = new THREE.SphereGeometry( 15, 32, 40 ); 
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } ); 
@@ -99,7 +102,7 @@
 				material = new THREE.MeshBasicMaterial( { color: asteroid[i][3] } ); 
 				asteroid[i][2] = new THREE.Mesh( geometry, material ); 
 				scene.add( asteroid[i][2] );
-				asteroid[i][2].scale.set (asteroid[i][1],asteroid[i][1],asteroid[i][1]);				
+				asteroid[i][2].scale.set (asteroid[i][1],asteroid[i][1],asteroid[i][1]);	
 			}
 
 			/*
@@ -144,9 +147,9 @@
 				//for a good primer on 3D rotation, see:
 				//https://www.khanacademy.org/computing/computer-programming/programming-games-visualizations/programming-3d-shapes/a/rotating-3d-shapes
 				for(i=0; i<num_asteroids; i++) {
-					asteroid[i][2].position.x = asteroid[i][4] * Math.sin(2*Math.PI * (sun_rotate_time%1000)/1000) * ((2*Math.PI-asteroid[i][0])/(2*Math.PI));;
-					asteroid[i][2].position.y = asteroid[i][4] * Math.sin(2*Math.PI * (sun_rotate_time%1000)/1000) * (asteroid[i][0]/(2*Math.PI));
-					asteroid[i][2].position.z = asteroid[i][4] * Math.cos(2*Math.PI * (sun_rotate_time%1000)/1000);
+					asteroid[i][2].position.x = asteroid[i][4] * Math.sin(asteroid[i][5]*Math.PI * (sun_rotate_time%2000)/2000) * ((2*Math.PI-asteroid[i][0])/(2*Math.PI));;
+					asteroid[i][2].position.y = asteroid[i][4] * Math.sin(asteroid[i][5]*Math.PI * (sun_rotate_time%2000)/2000) * (asteroid[i][0]/(2*Math.PI));
+					asteroid[i][2].position.z = asteroid[i][4] * Math.cos(asteroid[i][5]*Math.PI * (sun_rotate_time%2000)/2000);
 				}
 	
 				time++;
